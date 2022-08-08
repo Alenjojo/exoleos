@@ -6,11 +6,10 @@ jobs:
       name: exoleos-website CI
       steps:
         # To use this repository's private action, you must check out the repository
-        - uses: actions/checkout@v3
-        - run: npm ci
-        - run: npm run build
-
-        - uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        - uses: actions/checkout@v2
+        
+        - name: deploy file to server
+          uses: wlixcc/SFTP-Deploy-Action@v1.2.4
           with:
               username: 'creator'
               server: '${{ secrets.SERVER_IP }}'
@@ -18,3 +17,6 @@ jobs:
               local_path: './build/*'
               remote_path: '/var/www/html/exoleos'
               sftpArgs: '-o ConnectTimeout=5'
+        
+        - run: npm ci
+        - run: npm run build
